@@ -2,6 +2,7 @@ import { Routes, Route, Navigate } from 'react-router-dom';
 import Login from './pages/Login';
 import Registro from './pages/Registro.jsx'; 
 import Layout from './components/Layout'; 
+import Agenda from './pages/Agenda';
 
 // --- GUARDIA DE SEGURIDAD (ProtectedRoute) ---
 // Este componente revisa si el usuario tiene permiso de estar aquí
