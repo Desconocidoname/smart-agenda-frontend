@@ -1,32 +1,45 @@
-import { useNavigate, Link, Outlet } from 'react-router-dom';
-import styles from './Layout.module.css'; // Crea un CSS para tu barra lateral/superior
+import { useNavigate, Link, Outlet, useLocation } from 'react-router-dom';
+import styles from './Layout.module.css';
 
 export default function Layout() {
   const navigate = useNavigate();
+  const location = useLocation();
 
   const handleLogout = () => {
-    localStorage.removeItem('syncroToken'); // Borramos la tarjeta
-    navigate('/'); // Al login
+    localStorage.removeItem('syncroToken');
+    navigate('/');
   };
 
   return (
     <div className={styles.dashboardContainer}>
-      <aside className={styles.sidebar}>
-        <h2>Syncro</h2>
-        <nav>
-          <Link title="Hoy" to="/agenda">Mi Agenda</Link>
-          <Link title="Vencidas" to="/vencidas">Vencidas</Link>
-          <Link title="Completadas" to="/completadas">Completadas</Link>
-        </nav>
-        <button onClick={handleLogout} className={styles.logoutBtn}>
-          Cerrar Sesión
+      {/* Header Superior Compacto */}
+      <header className={styles.topHeader}>
+        <h2 className={styles.logo}>Syncro</h2>
+        <button onClick={handleLogout} className={styles.logoutIcon} title="Cerrar Sesión">
+          🚪
         </button>
-      </aside>
+      </header>
 
+      {/* Contenido Principal con padding inferior para no taparse con la barra */}
       <main className={styles.content}>
-        {/* Aquí es donde React Router meterá el contenido de cada ruta */}
         <Outlet />
       </main>
+
+      {/* Barra de Navegación Inferior (Tab Bar) */}
+      <nav className={styles.bottomNav}>
+        <Link to="/agenda" className={location.pathname === '/agenda' ? styles.active : ''}>
+          <span>📅</span>
+          <small>Hoy</small>
+        </Link>
+        <Link to="/vencidas" className={location.pathname === '/vencidas' ? styles.active : ''}>
+          <span>⚠️</span>
+          <small>Vencidas</small>
+        </Link>
+        <Link to="/completadas" className={location.pathname === '/completadas' ? styles.active : ''}>
+          <span>✅</span>
+          <small>Hechas</small>
+        </Link>
+      </nav>
     </div>
   );
 }

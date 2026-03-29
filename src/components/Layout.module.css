@@ -1,97 +1,75 @@
 .dashboardContainer {
   display: flex;
+  flex-direction: column;
   min-height: 100vh;
-  background-color: #0f172a; /* Fondo oscuro profesional */
+  background-color: #0f172a;
   color: #f8fafc;
-  font-family: 'Inter', system-ui, sans-serif;
 }
 
-/* BARRA LATERAL (SIDEBAR) */
-.sidebar {
-  width: 260px;
+/* HEADER SUPERIOR */
+.topHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 1.5rem;
+  background-color: #1e293b;
+  border-bottom: 1px solid #334155;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.logo {
+  font-size: 1.4rem;
+  color: #38bdf8;
+  margin: 0;
+}
+
+.logoutIcon {
+  background: none;
+  border: none;
+  font-size: 1.2rem;
+  cursor: pointer;
+}
+
+/* CONTENIDO */
+.content {
+  flex: 1;
+  padding: 1rem;
+  padding-bottom: 80px; /* Espacio para que la barra inferior no tape nada */
+}
+
+/* TAB BAR INFERIOR (ESTILO MÓVIL) */
+.bottomNav {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 65px;
   background-color: #1e293b;
   display: flex;
-  flex-direction: column;
-  padding: 2rem 1.5rem;
-  border-right: 1px solid #334155;
-  position: fixed; /* Se queda fija mientras haces scroll */
-  height: 100vh;
+  justify-content: space-around;
+  align-items: center;
+  border-top: 1px solid #334155;
+  padding-bottom: env(safe-area-inset-bottom); /* Para iPhones nuevos */
 }
 
-.sidebar h2 {
-  font-size: 1.8rem;
-  font-weight: 800;
-  margin-bottom: 3rem;
-  color: #38bdf8; /* Azul brillante estilo Syncro */
-  letter-spacing: -1px;
-}
-
-.sidebar nav {
+.bottomNav a {
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
-  flex-grow: 1; /* Empuja el botón de cerrar sesión hacia abajo */
-}
-
-.sidebar nav a {
+  align-items: center;
   text-decoration: none;
   color: #94a3b8;
-  padding: 0.8rem 1rem;
-  border-radius: 8px;
-  transition: all 0.2s ease;
-  font-weight: 500;
+  font-size: 1.2rem;
+  transition: 0.2s;
 }
 
-.sidebar nav a:hover {
-  background-color: #334155;
-  color: #f8fafc;
+.bottomNav a small {
+  font-size: 0.7rem;
+  margin-top: 2px;
 }
 
-/* Estilo para cuando el link está activo (opcional) */
-.sidebar nav a[aria-current="page"] {
-  background-color: #38bdf8;
-  color: #0f172a;
-}
-
-/* BOTÓN DE CERRAR SESIÓN */
-.logoutBtn {
-  background-color: transparent;
-  border: 1px solid #ef4444;
-  color: #ef4444;
-  padding: 0.8rem;
-  border-radius: 8px;
-  cursor: pointer;
-  font-weight: 600;
-  transition: all 0.2s ease;
-  margin-top: auto;
-}
-
-.logoutBtn:hover {
-  background-color: #ef4444;
-  color: white;
-}
-
-/* ÁREA DE CONTENIDO PRINCIPAL */
-.content {
-  margin-left: 260px; /* Deja espacio para la sidebar fija */
-  flex-grow: 1;
-  padding: 2rem;
-  background-color: #0f172a;
-  min-height: 100vh;
-}
-
-/* Responsive para celulares */
-@media (max-width: 768px) {
-  .dashboardContainer {
-    flex-direction: column;
-  }
-  .sidebar {
-    width: 100%;
-    height: auto;
-    position: relative;
-    padding: 1rem;
-  }
-  .content {
-    margin-left: 0;
-  }
+.bottomNav a.active {
+  color: #38bdf8;
+  transform: translateY(-5px); /* Pequeño salto para resaltar */
 }
