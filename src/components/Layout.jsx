@@ -1,4 +1,5 @@
 import { useNavigate, Link, Outlet, useLocation } from 'react-router-dom';
+import { Calendar, AlertCircle, CheckCircle2, LogOut } from 'lucide-react'; // Importamos los iconos
 import styles from './Layout.module.css';
 
 export default function Layout() {
@@ -12,31 +13,29 @@ export default function Layout() {
 
   return (
     <div className={styles.dashboardContainer}>
-      {/* Header Superior Blanco con Logo Verde */}
       <header className={styles.topHeader}>
         <h2 className={styles.logo}>Syncro</h2>
         <button onClick={handleLogout} className={styles.logoutIcon} title="Cerrar Sesión">
-          Logout
+          <LogOut size={18} />
+          <span>Salir</span>
         </button>
       </header>
 
-      {/* Contenido Principal sobre fondo blanco/gris muy claro */}
       <main className={styles.content}>
         <Outlet />
       </main>
 
-      {/* Tab Bar Inferior Verde y Blanco */}
       <nav className={styles.bottomNav}>
         <Link to="/agenda" className={location.pathname === '/agenda' ? styles.active : ''}>
-          <span className={styles.icon}>📅</span>
+          <Calendar className={styles.icon} />
           <small>Agenda</small>
         </Link>
         <Link to="/vencidas" className={location.pathname === '/vencidas' ? styles.active : ''}>
-          <span className={styles.icon}>⚠️</span>
+          <AlertCircle className={styles.icon} />
           <small>Vencidas</small>
         </Link>
         <Link to="/completadas" className={location.pathname === '/completadas' ? styles.active : ''}>
-          <span className={styles.icon}>✅</span>
+          <CheckCircle2 className={styles.icon} />
           <small>Hechas</small>
         </Link>
       </nav>

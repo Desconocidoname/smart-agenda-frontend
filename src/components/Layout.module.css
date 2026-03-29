@@ -2,7 +2,7 @@
   display: flex;
   flex-direction: column;
   min-height: 100vh;
-  background-color: #ffffff; /* Fondo blanco limpio */
+  background-color: #ffffff;
   color: #333;
   font-family: 'Inter', sans-serif;
 }
@@ -22,7 +22,7 @@
 
 .logo {
   font-size: 1.4rem;
-  color: #00796B; /* Tu Verde Syncro */
+  color: #00796B; /* Verde Syncro */
   font-weight: 800;
   margin: 0;
   letter-spacing: -1px;
@@ -30,24 +30,34 @@
 
 .logoutIcon {
   background: none;
-  border: 1px solid #ccc;
+  border: 1px solid #eee;
   color: #666;
-  font-size: 0.75rem;
-  padding: 4px 8px;
-  border-radius: 6px;
+  padding: 6px 12px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.85rem;
   font-weight: 600;
   cursor: pointer;
+  transition: all 0.2s;
 }
 
-/* CONTENIDO */
+.logoutIcon:hover {
+  background-color: #fff1f0;
+  border-color: #ffa39e;
+  color: #f5222d;
+}
+
+/* CONTENIDO PRINCIPAL */
 .content {
   flex: 1;
   padding: 1.5rem;
-  padding-bottom: 90px; /* Para que no lo tape la barra inferior */
+  padding-bottom: 90px;
   background-color: #fcfcfc;
 }
 
-/* TAB BAR INFERIOR (ESTILO MÓVIL) */
+/* TAB BAR INFERIOR */
 .bottomNav {
   position: fixed;
   bottom: 0;
@@ -73,9 +83,12 @@
   width: 33%;
 }
 
+/* ESTILO PARA LOS ICONOS DE LUCIDE */
 .icon {
-  font-size: 1.3rem;
-  margin-bottom: 2px;
+  width: 24px;
+  height: 24px;
+  margin-bottom: 4px;
+  stroke-width: 2.2px;
 }
 
 .bottomNav a small {
@@ -83,16 +96,11 @@
   font-weight: 500;
 }
 
-/* El estado activo usa tu verde principal */
+/* ESTADO ACTIVO (VERDE) */
 .bottomNav a.active {
   color: #00796B;
 }
 
 .bottomNav a.active .icon {
-  transform: scale(1.2);
-}
-
-/* Para que se sienta bien al tocar en móvil */
-.bottomNav a:active {
-  background-color: rgba(0, 121, 107, 0.05);
+  transform: scale(1.1);
 }
