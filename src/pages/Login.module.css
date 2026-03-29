@@ -1,0 +1,121 @@
+
+
+.container {
+  display: flex;
+  justify-content: center;
+  /* 🔥 Cambiamos flex-start por flex-end para que todo se pegue abajo */
+  align-items: flex-end; 
+  min-height: 100vh;
+  background-color: #ffffff;
+  font-family: 'Inter', sans-serif;
+  /* Añadimos un padding abajo para que no choque con la barrita del iPhone */
+  padding-bottom: 4rem; 
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
+}
+
+.loginBox {
+  width: 100%;
+  max-width: 400px;
+  /* Opcional: una pequeña animación para que parezca que sube */
+  animation: slideUp 0.5s ease-out;
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+/* Los títulos ahora se ven más modernos alineados a la izquierda (opcional, puedes poner 'center' si prefieres) */
+.title {
+  color: #00796B;
+  text-align: left; 
+  margin-bottom: 0.5rem;
+  font-size: 2.2rem;
+  font-weight: 800;
+  letter-spacing: -1px;
+}
+
+.subtitle {
+  color: #666;
+  text-align: left;
+  margin-bottom: 2.5rem;
+  font-size: 1.1rem;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.inputGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.inputGroup label {
+  font-size: 0.9rem;
+  color: #333;
+  font-weight: 500;
+}
+
+.input {
+  padding: 1rem; /* Un poco más de espacio (dedos) para celulares */
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+  background-color: #fafafa; /* Fondo ligerísimamente gris para resaltar el input */
+}
+
+.input:focus {
+  outline: none;
+  border-color: #00796B;
+  background-color: #ffffff;
+  box-shadow: 0 0 0 3px rgba(0, 121, 107, 0.15); /* Anillo de foco suave */
+}
+
+.button {
+  background-color: #00796B;
+  color: white;
+  padding: 1.1rem;
+  border: none;
+  border-radius: 8px;
+  font-size: 1.1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.1s;
+  margin-top: 1rem; /* Lo separa un poco más de las contraseñas */
+}
+
+.button:hover {
+  background-color: #00564d;
+}
+
+.button:active {
+  transform: scale(0.98);
+}
+
+.linkContainer {
+  text-align: center;
+  margin-top: 1.5rem;
+}
+
+.link {
+  color: #00796B;
+  text-decoration: none;
+  font-size: 0.95rem;
+  font-weight: 500;
+}
+
+.link:hover {
+  text-decoration: underline;
+}
