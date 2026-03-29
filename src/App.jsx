@@ -33,7 +33,7 @@ function App() {
           </ProtectedRoute>
         }
       >
-        <Route path="/agenda" element={<h1>Mis Tareas (Hoy)</h1>} />
+        <Route path="/agenda" element={<Agenda />} />
         <Route path="/vencidas" element={<h1>Tareas Vencidas</h1>} />
         <Route path="/completadas" element={<h1>Tareas Completadas</h1>} />
       </Route>
