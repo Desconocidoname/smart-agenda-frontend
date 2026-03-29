@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Calendar, Clock, CheckCircle, X } from 'lucide-react'; // Agregamos la 'X' para cerrar
+import { Calendar, Clock, CheckCircle, X } from 'lucide-react'; 
 import { API_URL } from '../services/api';
 import styles from './Agenda.module.css';
 
@@ -7,7 +7,6 @@ export default function Agenda() {
   const [tareas, setTareas] = useState([]);
   const [loading, setLoading] = useState(true);
   
-  // Estados para el Modal (Ventanita de nueva tarea)
   const [showModal, setShowModal] = useState(false);
   const [nuevoTitulo, setNuevoTitulo] = useState('');
   const [nuevaFecha, setNuevaFecha] = useState('');
@@ -20,7 +19,7 @@ export default function Agenda() {
       });
       if (response.ok) {
         const data = await response.json();
-        setTareas(data || []); // El || [] evita errores si data es null
+        setTareas(data || []); 
       }
     } catch (error) {
       console.error("Error al cargar tareas:", error);
@@ -33,18 +32,15 @@ export default function Agenda() {
     fetchTareas();
   }, []);
 
-  // Función para guardar la nueva tarea
   const handleCrearTarea = async (e) => {
     e.preventDefault();
     const token = localStorage.getItem('syncroToken');
 
-    // Generamos la tarea con su ID desde el frontend (Estrategia Offline)
     const tareaNueva = {
-      id: crypto.randomUUID(), // Genera un UUID perfecto: 8-4-4-4-12
+      id: crypto.randomUUID(), 
       title: nuevoTitulo,
-      description: "", // Lo mandamos vacío para que Go no se enoje
+      description: "", 
       status: "pending",
-      // Convertimos la fecha del input al formato ISO que usa tu base de datos
       due_date: new Date(`${nuevaFecha}T12:00:00Z`).toISOString(), 
     };
 
@@ -59,9 +55,7 @@ export default function Agenda() {
       });
 
       if (response.ok) {
-        // Agregamos la tarea a la lista sin recargar la página
         setTareas([...tareas, tareaNueva]);
-        // Limpiamos y cerramos el modal
         setShowModal(false);
         setNuevoTitulo('');
         setNuevaFecha('');
@@ -74,6 +68,35 @@ export default function Agenda() {
     }
   };
 
+  // =========================================================
+  // 🔥 LA MAGIA DEL FILTRO Y ORDENAMIENTO ESTÁ AQUÍ
+  // =========================================================
+  
+  // 1. Obtenemos la fecha de hoy a la medianoche para comparar
+  const hoy = new Date();
+  hoy.setHours(0, 0, 0, 0);
+
+  // 2. Procesamos el arreglo original antes de enviarlo al HTML
+  const tareasParaHoy = tareas
+    .filter(tarea => {
+      // Ignoramos las que ya están completadas
+      if (tarea.status === 'completed') return false;
+
+      // Convertimos la fecha de la base de datos a un objeto Date
+      const fechaTarea = new Date(tarea.due_date);
+      fechaTarea.setHours(0, 0, 0, 0); 
+
+      // Si la fecha es de hoy o del futuro, se queda en la Agenda.
+      // Si es del pasado, la descartamos (se vuelve "Vencida" automáticamente)
+      return fechaTarea >= hoy; 
+    })
+    .sort((a, b) => {
+      // Ordenamos de la fecha más cercana a la más lejana
+      return new Date(a.due_date) - new Date(b.due_date);
+    });
+
+  // =========================================================
+
   if (loading) return <div className={styles.loader}>Cargando agenda...</div>;
 
   return (
@@ -84,16 +107,17 @@ export default function Agenda() {
       </header>
 
       <div className={styles.list}>
-        {tareas.length === 0 ? (
+        {/* Cambiamos 'tareas' por 'tareasParaHoy' */}
+        {tareasParaHoy.length === 0 ? (
           <p className={styles.empty}>No tienes tareas para hoy. ¡A descansar! 🌴</p>
         ) : (
-          tareas.map((tarea) => (
+          tareasParaHoy.map((tarea) => (
             <div key={tarea.id} className={styles.card}>
               <div className={styles.cardContent}>
                 <h3>{tarea.title}</h3>
                 <div className={styles.info}>
                   <Clock size={14} />
-                  <span>{tarea.due_date.substring(0, 10)}</span> {/* Recortamos para que se vea solo YYYY-MM-DD */}
+                  <span>{tarea.due_date.substring(0, 10)}</span>
                 </div>
               </div>
               <button className={styles.checkBtn} title="Completar">
@@ -104,16 +128,14 @@ export default function Agenda() {
         )}
       </div>
       
-      {/* Botón Flotante para nueva tarea */}
       <button 
         className={styles.fab} 
         title="Nueva Tarea"
-        onClick={() => setShowModal(true)} // Abre el modal
+        onClick={() => setShowModal(true)} 
       >
         +
       </button>
 
-      {/* MODAL (Formulario Emergente) */}
       {showModal && (
         <div className={styles.modalOverlay}>
           <div className={styles.modalContent}>

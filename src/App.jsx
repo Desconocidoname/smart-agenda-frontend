@@ -3,6 +3,7 @@ import Login from './pages/Login';
 import Registro from './pages/Registro.jsx'; 
 import Layout from './components/Layout'; 
 import Agenda from './pages/Agenda';
+import Vencidas from './pages/Vencidas.jsx';
 
 // --- GUARDIA DE SEGURIDAD (ProtectedRoute) ---
 // Este componente revisa si el usuario tiene permiso de estar aquí
@@ -35,7 +36,7 @@ function App() {
         }
       >
         <Route path="/agenda" element={<Agenda />} />
-        <Route path="/vencidas" element={<h1>Tareas Vencidas</h1>} />
+        <Route path="/vencidas" element={<Vencidas />} />
         <Route path="/completadas" element={<h1>Tareas Completadas</h1>} />
       </Route>
       
