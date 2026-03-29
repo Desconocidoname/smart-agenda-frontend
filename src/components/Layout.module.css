@@ -2,8 +2,9 @@
   display: flex;
   flex-direction: column;
   min-height: 100vh;
-  background-color: #0f172a;
-  color: #f8fafc;
+  background-color: #ffffff; /* Fondo blanco limpio */
+  color: #333;
+  font-family: 'Inter', sans-serif;
 }
 
 /* HEADER SUPERIOR */
@@ -11,9 +12,9 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 1rem 1.5rem;
-  background-color: #1e293b;
-  border-bottom: 1px solid #334155;
+  padding: 0.8rem 1.5rem;
+  background-color: #ffffff;
+  border-bottom: 1px solid #eee;
   position: sticky;
   top: 0;
   z-index: 100;
@@ -21,22 +22,29 @@
 
 .logo {
   font-size: 1.4rem;
-  color: #38bdf8;
+  color: #00796B; /* Tu Verde Syncro */
+  font-weight: 800;
   margin: 0;
+  letter-spacing: -1px;
 }
 
 .logoutIcon {
   background: none;
-  border: none;
-  font-size: 1.2rem;
+  border: 1px solid #ccc;
+  color: #666;
+  font-size: 0.75rem;
+  padding: 4px 8px;
+  border-radius: 6px;
+  font-weight: 600;
   cursor: pointer;
 }
 
 /* CONTENIDO */
 .content {
   flex: 1;
-  padding: 1rem;
-  padding-bottom: 80px; /* Espacio para que la barra inferior no tape nada */
+  padding: 1.5rem;
+  padding-bottom: 90px; /* Para que no lo tape la barra inferior */
+  background-color: #fcfcfc;
 }
 
 /* TAB BAR INFERIOR (ESTILO MÓVIL) */
@@ -45,13 +53,14 @@
   bottom: 0;
   left: 0;
   right: 0;
-  height: 65px;
-  background-color: #1e293b;
+  height: 70px;
+  background-color: #ffffff;
   display: flex;
   justify-content: space-around;
   align-items: center;
-  border-top: 1px solid #334155;
-  padding-bottom: env(safe-area-inset-bottom); /* Para iPhones nuevos */
+  border-top: 1px solid #eee;
+  box-shadow: 0 -2px 10px rgba(0,0,0,0.05);
+  padding-bottom: env(safe-area-inset-bottom);
 }
 
 .bottomNav a {
@@ -59,17 +68,31 @@
   flex-direction: column;
   align-items: center;
   text-decoration: none;
-  color: #94a3b8;
-  font-size: 1.2rem;
-  transition: 0.2s;
+  color: #999;
+  transition: all 0.3s ease;
+  width: 33%;
+}
+
+.icon {
+  font-size: 1.3rem;
+  margin-bottom: 2px;
 }
 
 .bottomNav a small {
-  font-size: 0.7rem;
-  margin-top: 2px;
+  font-size: 0.75rem;
+  font-weight: 500;
 }
 
+/* El estado activo usa tu verde principal */
 .bottomNav a.active {
-  color: #38bdf8;
-  transform: translateY(-5px); /* Pequeño salto para resaltar */
+  color: #00796B;
+}
+
+.bottomNav a.active .icon {
+  transform: scale(1.2);
+}
+
+/* Para que se sienta bien al tocar en móvil */
+.bottomNav a:active {
+  background-color: rgba(0, 121, 107, 0.05);
 }

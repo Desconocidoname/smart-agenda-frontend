@@ -3,12 +3,10 @@
 .container {
   display: flex;
   justify-content: center;
-  /* 🔥 Cambiamos flex-start por flex-end para que todo se pegue abajo */
   align-items: flex-end; 
   min-height: 100vh;
   background-color: #ffffff;
   font-family: 'Inter', sans-serif;
-  /* Añadimos un padding abajo para que no choque con la barrita del iPhone */
   padding-bottom: 4rem; 
   padding-left: 1.5rem;
   padding-right: 1.5rem;
@@ -17,7 +15,6 @@
 .loginBox {
   width: 100%;
   max-width: 400px;
-  /* Opcional: una pequeña animación para que parezca que sube */
   animation: slideUp 0.5s ease-out;
 }
 
@@ -32,7 +29,6 @@
   }
 }
 
-/* Los títulos ahora se ven más modernos alineados a la izquierda (opcional, puedes poner 'center' si prefieres) */
 .title {
   color: #00796B;
   text-align: left; 

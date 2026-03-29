@@ -12,31 +12,31 @@ export default function Layout() {
 
   return (
     <div className={styles.dashboardContainer}>
-      {/* Header Superior Compacto */}
+      {/* Header Superior Blanco con Logo Verde */}
       <header className={styles.topHeader}>
         <h2 className={styles.logo}>Syncro</h2>
         <button onClick={handleLogout} className={styles.logoutIcon} title="Cerrar Sesión">
-          🚪
+          Logout
         </button>
       </header>
 
-      {/* Contenido Principal con padding inferior para no taparse con la barra */}
+      {/* Contenido Principal sobre fondo blanco/gris muy claro */}
       <main className={styles.content}>
         <Outlet />
       </main>
 
-      {/* Barra de Navegación Inferior (Tab Bar) */}
+      {/* Tab Bar Inferior Verde y Blanco */}
       <nav className={styles.bottomNav}>
         <Link to="/agenda" className={location.pathname === '/agenda' ? styles.active : ''}>
-          <span>📅</span>
-          <small>Hoy</small>
+          <span className={styles.icon}>📅</span>
+          <small>Agenda</small>
         </Link>
         <Link to="/vencidas" className={location.pathname === '/vencidas' ? styles.active : ''}>
-          <span>⚠️</span>
+          <span className={styles.icon}>⚠️</span>
           <small>Vencidas</small>
         </Link>
         <Link to="/completadas" className={location.pathname === '/completadas' ? styles.active : ''}>
-          <span>✅</span>
+          <span className={styles.icon}>✅</span>
           <small>Hechas</small>
         </Link>
       </nav>
