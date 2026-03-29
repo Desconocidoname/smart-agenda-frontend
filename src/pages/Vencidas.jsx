@@ -55,7 +55,6 @@ export default function Vencidas() {
     <div className={styles.container}>
       <header className={styles.header}>
         <div className={styles.titleRow}>
-          <AlertCircle color="#ef4444" size={28} />
           <h1>Vencidas</h1>
         </div>
         <p>Tareas que se te pasaron de fecha</p>
