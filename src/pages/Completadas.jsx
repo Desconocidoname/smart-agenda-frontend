@@ -1,13 +1,13 @@
 import { useOutletContext } from 'react-router-dom';
-import { CheckCircle2, CalendarDays } from 'lucide-react'; 
+import { CheckCircle2, CalendarDays, Trash2 } from 'lucide-react';
 import styles from './Completadas.module.css';
 
 export default function Completadas() {
-  const { tareas } = useOutletContext(); 
-
-  // FILTRO: Solo las completadas
-  const tareasCompletadas = tareas
-    .filter(tarea => tarea.status === 'completed')
+const { tareas, handleBorrarTarea } = useOutletContext();
+  // FILTRO: Solo las completadas y que NO estén borradas lógicamente
+  // Usamos (tareas || []) como salvavidas
+  const tareasCompletadas = (tareas || [])
+    .filter(tarea => tarea.status === 'completed' && !tarea.is_deleted)
     // Las ordenamos para ver las más recientes arriba
     .sort((a, b) => b.due_date.localeCompare(a.due_date)); 
 
@@ -34,7 +34,20 @@ export default function Completadas() {
                   <span>{tarea.due_date.substring(0, 10)}</span>
                 </div>
               </div>
-              <CheckCircle2 size={24} color="#10b981" />
+              {/* Contenedor para poner los iconos juntos */}
+              <div style={{ display: 'flex', gap: '15px', alignItems: 'center' }}>
+                <CheckCircle2 size={24} color="#10b981" />
+                
+                {/* BOTÓN DE BORRAR */}
+                <button 
+                  onClick={() => handleBorrarTarea(tarea.id)}
+                  style={{ background: 'none', border: 'none', cursor: 'pointer', padding: 0 }}
+                  title="Eliminar tarea"
+                >
+                  <Trash2 size={22} color="#ef4444" />
+                </button>
+              </div>
+
             </div>
           ))
         )}

@@ -1,22 +1,21 @@
 import { useOutletContext } from 'react-router-dom';
-import { AlertCircle, Clock, CheckCircle } from 'lucide-react'; 
+import { Clock, CheckCircle, Trash2 } from 'lucide-react'; // Agregamos Trash2
 import styles from './Vencidas.module.css'; 
 
 export default function Vencidas() {
-  const { tareas, handleCompletarTarea } = useOutletContext(); 
-
+  // Extraemos también handleBorrarTarea
+  const { tareas, handleCompletarTarea, handleBorrarTarea } = useOutletContext(); 
 
   const hoyDate = new Date();
   const hoyStr = hoyDate.getFullYear() + '-' + 
                  String(hoyDate.getMonth() + 1).padStart(2, '0') + '-' + 
                  String(hoyDate.getDate()).padStart(2, '0');
 
-  const tareasVencidas = tareas
+  const tareasVencidas = (tareas || [])
     .filter(tarea => {
-      if (tarea.status === 'completed') return false;
+      if (tarea.status === 'completed' || tarea.is_deleted) return false;
       
       const fechaTareaStr = tarea.due_date.substring(0, 10);
-      
       return fechaTareaStr < hoyStr; 
     })
     .sort((a, b) => a.due_date.localeCompare(b.due_date));
@@ -45,13 +44,31 @@ export default function Vencidas() {
                   </span>
                 </div>
               </div>
-              <button 
-                className={styles.checkBtn} 
-                title="Completar"
-                onClick={() => handleCompletarTarea(tarea.id)} // Llama a la función del Layout
-              >
-                <CheckCircle size={24} />
-              </button>
+              
+              {/* Contenedor para agrupar los botones de Completar y Borrar */}
+              <div style={{ display: 'flex', gap: '15px', alignItems: 'center' }}>
+                <button 
+                  className={styles.checkBtn} 
+                  title="Completar"
+                  onClick={() => {
+                    const confirmado = window.confirm("¿Deseas marcar esta tarea vencida como completada?");
+                    if (confirmado) {
+                      handleCompletarTarea(tarea.id);
+                    }
+                  }} 
+                >
+                  <CheckCircle size={24} />
+                </button>
+
+                <button 
+                  onClick={() => handleBorrarTarea(tarea.id)}
+                  style={{ background: 'none', border: 'none', cursor: 'pointer', padding: 0 }}
+                  title="Eliminar tarea"
+                >
+                  <Trash2 size={22} color="#ef4444" />
+                </button>
+              </div>
+
             </div>
           ))
         )}

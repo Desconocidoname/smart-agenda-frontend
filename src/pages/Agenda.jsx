@@ -1,11 +1,13 @@
 import { useState } from 'react';
 import { useOutletContext } from 'react-router-dom';
-import { Calendar, Clock, CheckCircle, X } from 'lucide-react'; 
+import { Calendar, Clock, CheckCircle, X, Trash2 } from 'lucide-react'; // Agregamos Trash2
 import { API_URL } from '../services/api';
 import styles from './Agenda.module.css';
+import { db } from '../db';
 
 export default function Agenda() {
-  const { tareas, setTareas, handleCompletarTarea } = useOutletContext();
+  // Extraemos también handleBorrarTarea
+  const { tareas, handleCompletarTarea, handleBorrarTarea } = useOutletContext();
   
   const [showModal, setShowModal] = useState(false);
   const [nuevoTitulo, setNuevoTitulo] = useState('');
@@ -20,10 +22,18 @@ export default function Agenda() {
       title: nuevoTitulo,
       description: "", 
       status: "pending",
-      due_date: new Date(`${nuevaFecha}T12:00:00Z`).toISOString(), 
+      due_date: new Date(`${nuevaFecha}T12:00:00Z`).toISOString(),
+      updated_at: new Date().toISOString(), 
+      sincronizado: 0 
     };
 
     try {
+      await db.tasks.add(tareaNueva);
+      
+      setShowModal(false);
+      setNuevoTitulo('');
+      setNuevaFecha('');
+
       const response = await fetch(`${API_URL}/tasks`, {
         method: 'POST',
         headers: {
@@ -34,16 +44,11 @@ export default function Agenda() {
       });
 
       if (response.ok) {
-        setTareas([...tareas, tareaNueva]);
-        setShowModal(false);
-        setNuevoTitulo('');
-        setNuevaFecha('');
-      } else {
-        alert("Hubo un problema al guardar");
+        await db.tasks.update(tareaNueva.id, { sincronizado: 1 });
       }
+
     } catch (error) {
-      console.error(error);
-      alert("Error de conexión");
+      console.log("Tarea guardada localmente (Offline)");
     }
   };
 
@@ -52,9 +57,9 @@ export default function Agenda() {
                  String(hoyDate.getMonth() + 1).padStart(2, '0') + '-' + 
                  String(hoyDate.getDate()).padStart(2, '0');
 
-  const tareasParaHoy = tareas
+  const tareasParaHoy = (tareas || [])
     .filter(tarea => {
-      if (tarea.status === 'completed') return false;
+      if (tarea.status === 'completed' || tarea.is_deleted) return false;
       const fechaTareaStr = tarea.due_date.substring(0, 10);
       return fechaTareaStr >= hoyStr; 
     })
@@ -80,19 +85,31 @@ export default function Agenda() {
                   <span>{tarea.due_date.substring(0, 10)}</span>
                 </div>
               </div>
-              {/* ✅ AQUÍ VA EL BOTÓN DE CONFIRMACIÓN (En la lista de tareas) */}
-              <button 
-                className={styles.checkBtn} 
-                title="Completar"
-                onClick={() => {
-                  const confirmado = window.confirm("¿Seguro que deseas marcar esta tarea como completada?");
-                  if (confirmado) {
-                    handleCompletarTarea(tarea.id);
-                  }
-                }} 
-              >
-                <CheckCircle size={24} />
-              </button>
+              
+              {/* Contenedor para agrupar los botones de Completar y Borrar */}
+              <div style={{ display: 'flex', gap: '15px', alignItems: 'center' }}>
+                <button 
+                  className={styles.checkBtn} 
+                  title="Completar"
+                  onClick={() => {
+                    const confirmado = window.confirm("¿Seguro que deseas marcar esta tarea como completada?");
+                    if (confirmado) {
+                      handleCompletarTarea(tarea.id);
+                    }
+                  }} 
+                >
+                  <CheckCircle size={24} />
+                </button>
+
+                <button 
+                  onClick={() => handleBorrarTarea(tarea.id)}
+                  style={{ background: 'none', border: 'none', cursor: 'pointer', padding: 0 }}
+                  title="Eliminar tarea"
+                >
+                  <Trash2 size={22} color="#ef4444" />
+                </button>
+              </div>
+
             </div>
           ))
         )}
