@@ -55,9 +55,7 @@ export default function Agenda() {
   const tareasParaHoy = tareas
     .filter(tarea => {
       if (tarea.status === 'completed') return false;
-      
       const fechaTareaStr = tarea.due_date.substring(0, 10);
-      
       return fechaTareaStr >= hoyStr; 
     })
     .sort((a, b) => a.due_date.localeCompare(b.due_date)); 
@@ -82,10 +80,16 @@ export default function Agenda() {
                   <span>{tarea.due_date.substring(0, 10)}</span>
                 </div>
               </div>
+              {/* ✅ AQUÍ VA EL BOTÓN DE CONFIRMACIÓN (En la lista de tareas) */}
               <button 
                 className={styles.checkBtn} 
                 title="Completar"
-                onClick={() => handleCompletarTarea(tarea.id)} // Llama a la función del Layout
+                onClick={() => {
+                  const confirmado = window.confirm("¿Seguro que deseas marcar esta tarea como completada?");
+                  if (confirmado) {
+                    handleCompletarTarea(tarea.id);
+                  }
+                }} 
               >
                 <CheckCircle size={24} />
               </button>
@@ -117,18 +121,7 @@ export default function Agenda() {
                 <label>¿Para cuándo?</label>
                 <input type="date" required value={nuevaFecha} onChange={(e) => setNuevaFecha(e.target.value)} />
               </div>
-              <button 
-                className={styles.checkBtn} 
-                title="Completar"
-                onClick={() => {
-                  const confirmado = window.confirm("¿Seguro que deseas marcar esta tarea como completada?");
-                  if (confirmado) {
-                    handleCompletarTarea(tarea.id);
-                  }
-                }} 
-              >
-                <CheckCircle size={24} />
-              </button>
+              <button type="submit" className={styles.saveBtn}>Guardar Tarea</button>
             </form>
           </div>
         </div>
