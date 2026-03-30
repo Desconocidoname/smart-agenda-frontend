@@ -1,0 +1,11 @@
+/* Esto quita el recuadro gris molesto en celulares */
+* {
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Opcional: Si quieres que los botones se sientan vivos, 
+   podemos agregar un efecto de escala suave en lugar del gris */
+button:active, a:active {
+  transform: scale(0.96);
+  transition: transform 0.1s;
+}
