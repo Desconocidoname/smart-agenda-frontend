@@ -1,12 +1,22 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react'; // 1. Agregamos useEffect
 import { Link, useNavigate } from 'react-router-dom';
 import styles from './Login.module.css';
-import { API_URL } from '../services/api'; // Importamos tu config central
+import { API_URL } from '../services/api'; 
 
 export default function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
+
+  useEffect(() => {
+    // Apenas carga la página, buscamos en la memoria
+    const token = localStorage.getItem('syncroToken');
+    
+    // Si encontramos el token, significa que ya inició sesión antes
+    if (token) {
+      navigate('/agenda'); // Lo mandamos directo adentro
+    }
+  }, [navigate]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -20,22 +30,29 @@ export default function Login() {
         body: JSON.stringify({ email, password }),
       });
 
+      // 1. PRIMERO revisamos si el servidor nos dio un error (401, 404, 500)
+      if (!response.ok) {
+        // Leemos el error como texto plano, por si Go no mandó un JSON
+        const errorText = await response.text(); 
+        alert(errorText || "Credenciales incorrectas");
+        return; // Detenemos la función aquí mismo
+      }
+
+      // 2. Si llegamos a esta línea, la contraseña fue CORRECTA
+      // Ahora sí es 100% seguro convertir a JSON porque sabemos que viene el token
       const data = await response.json();
 
-      if (response.ok) {
-        // 1. GUARDAR EL TOKEN (La tarjeta magnética)
-        // Lo guardamos en localStorage para que no se borre al refrescar la página
-        localStorage.setItem('syncroToken', data.token);
-        
-        // 2. REDIRIGIR AL DASHBOARD
-        alert("¡Bienvenido de nuevo!");
-        navigate('/agenda'); 
-      } else {
-        alert(data.mensaje || "Credenciales incorrectas");
-      }
+      // GUARDAR EL TOKEN
+      localStorage.setItem('syncroToken', data.token);
+      
+      // REDIRIGIR AL DASHBOARD
+      alert("¡Bienvenido de nuevo!");
+      navigate('/agenda'); 
+
     } catch (error) {
+      // Este catch ahora SÍ atrapará solo problemas reales de red (ej. si apagas el Wi-Fi)
       console.error("Error de conexión:", error);
-      alert("No se pudo conectar con el servidor.");
+      alert("No se pudo conectar con el servidor. Revisa tu internet.");
     }
   };
 
