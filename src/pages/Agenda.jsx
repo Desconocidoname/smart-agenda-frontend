@@ -1,17 +1,27 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react'; // Agregamos useEffect aquí
 import { useOutletContext } from 'react-router-dom';
-import { Calendar, Clock, CheckCircle, X, Trash2 } from 'lucide-react'; // Agregamos Trash2
+import { Calendar, Clock, CheckCircle, X, Trash2 } from 'lucide-react';
 import { API_URL } from '../services/api';
 import styles from './Agenda.module.css';
 import { db } from '../db';
 
 export default function Agenda() {
-  // Extraemos también handleBorrarTarea
   const { tareas, handleCompletarTarea, handleBorrarTarea } = useOutletContext();
   
   const [showModal, setShowModal] = useState(false);
   const [nuevoTitulo, setNuevoTitulo] = useState('');
   const [nuevaFecha, setNuevaFecha] = useState('');
+
+  // --- BLOQUE CORRECTO DEL USEEFFECT ---
+  useEffect(() => {
+    if (showModal) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'unset';
+    }
+    // Limpieza al desmontar el componente
+    return () => { document.body.style.overflow = 'unset'; };
+  }, [showModal]);
 
   const handleCrearTarea = async (e) => {
     e.preventDefault();
@@ -29,7 +39,6 @@ export default function Agenda() {
 
     try {
       await db.tasks.add(tareaNueva);
-      
       setShowModal(false);
       setNuevoTitulo('');
       setNuevaFecha('');
@@ -46,7 +55,6 @@ export default function Agenda() {
       if (response.ok) {
         await db.tasks.update(tareaNueva.id, { sincronizado: 1 });
       }
-
     } catch (error) {
       console.log("Tarea guardada localmente (Offline)");
     }
@@ -86,40 +94,26 @@ export default function Agenda() {
                 </div>
               </div>
               
-              {/* Contenedor para agrupar los botones de Completar y Borrar */}
               <div style={{ display: 'flex', gap: '15px', alignItems: 'center' }}>
                 <button 
                   className={styles.checkBtn} 
-                  title="Completar"
                   onClick={() => {
-                    const confirmado = window.confirm("¿Seguro que deseas marcar esta tarea como completada?");
-                    if (confirmado) {
-                      handleCompletarTarea(tarea.id);
-                    }
+                    if (window.confirm("¿Marcar como completada?")) handleCompletarTarea(tarea.id);
                   }} 
                 >
                   <CheckCircle size={24} />
                 </button>
-
-                <button 
-                  onClick={() => handleBorrarTarea(tarea.id)}
-                  style={{ background: 'none', border: 'none', cursor: 'pointer', padding: 0 }}
-                  title="Eliminar tarea"
-                >
+                <button onClick={() => handleBorrarTarea(tarea.id)}>
                   <Trash2 size={22} color="#ef4444" />
                 </button>
               </div>
-
             </div>
           ))
         )}
       </div>
       
-      <button className={styles.fab} title="Nueva Tarea" onClick={() => setShowModal(true)}>
-        +
-      </button>
+      <button className={styles.fab} onClick={() => setShowModal(true)}>+</button>
 
-      {/* MODAL */}
       {showModal && (
         <div className={styles.modalOverlay}>
           <div className={styles.modalContent}>
