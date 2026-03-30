@@ -91,31 +91,39 @@
   margin-top: 3rem;
   color: #999;
 }
-
-/* --- ESTILOS DEL MODAL --- */
+/* 1. EL FONDO OSCURO */
 .modalOverlay {
   position: fixed;
   top: 0;
   left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: rgba(0, 0, 0, 0.4);
-  display: flex;
-  align-items: flex-end; /* Lo pega abajo en el celular */
-  justify-content: center;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.5);
   z-index: 1000;
-  backdrop-filter: blur(2px);
-  animation: fadeIn 0.2s ease-out;
+  
+  /* Aquí está la magia: usamos flexbox pero lo alineamos arriba, no al centro */
+  display: flex;
+  justify-content: center;
+  align-items: flex-start; /* Esto evita que el teclado lo aplaste */
+  
+  /* Damos un margen superior para que no pegue con la barra de estado del celular */
+  padding-top: 15vh; 
+  
+  /* Si el celular es muy pequeño, permitimos que el usuario baje con el dedo */
+  overflow-y: auto; 
 }
 
+/* 2. LA CAJA BLANCA DEL MODAL */
 .modalContent {
-  background-color: #ffffff;
-  width: 100%;
-  max-width: 600px;
-  border-radius: 20px 20px 0 0; /* Bordes redondeados arriba */
-  padding: 2rem 1.5rem;
-  box-shadow: 0 -4px 20px rgba(0,0,0,0.1);
-  animation: slideUp 0.3s ease-out;
+  background-color: white;
+  width: 90%;
+  max-width: 400px; /* Para que en PC no se vea gigante */
+  border-radius: 16px;
+  padding: 20px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+  
+  /* Margen inferior por si hacen scroll hasta abajo */
+  margin-bottom: 50px; 
 }
 
 .modalHeader {
