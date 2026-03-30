@@ -4,7 +4,7 @@ import Registro from './pages/Registro.jsx';
 import Layout from './components/Layout'; 
 import Agenda from './pages/Agenda';
 import Vencidas from './pages/Vencidas.jsx';
-import Vencidas from './pages/Completadas.jsx';
+import Completadas from './pages/Completadas.jsx';
 
 
 // --- GUARDIA DE SEGURIDAD (ProtectedRoute) ---
