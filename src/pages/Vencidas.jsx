@@ -5,24 +5,26 @@ import styles from './Vencidas.module.css';
 export default function Vencidas() {
   const { tareas, handleCompletarTarea } = useOutletContext(); 
 
-  // FILTRO: Solo tareas del PASADO (y pendientes)
-  const hoy = new Date();
-  hoy.setHours(0, 0, 0, 0);
+
+  const hoyDate = new Date();
+  const hoyStr = hoyDate.getFullYear() + '-' + 
+                 String(hoyDate.getMonth() + 1).padStart(2, '0') + '-' + 
+                 String(hoyDate.getDate()).padStart(2, '0');
 
   const tareasVencidas = tareas
     .filter(tarea => {
       if (tarea.status === 'completed') return false;
-      const fechaTarea = new Date(tarea.due_date);
-      fechaTarea.setHours(0, 0, 0, 0); 
-      return fechaTarea < hoy; 
+      
+      const fechaTareaStr = tarea.due_date.substring(0, 10);
+      
+      return fechaTareaStr < hoyStr; 
     })
-    .sort((a, b) => new Date(a.due_date) - new Date(b.due_date));
+    .sort((a, b) => a.due_date.localeCompare(b.due_date));
 
   return (
     <div className={styles.container}>
       <header className={styles.header}>
         <div className={styles.titleRow}>
-          <AlertCircle color="#ef4444" size={28} />
           <h1>Vencidas</h1>
         </div>
         <p>Tareas que se te pasaron de fecha</p>

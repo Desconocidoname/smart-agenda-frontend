@@ -37,7 +37,7 @@ function App() {
       >
         <Route path="/agenda" element={<Agenda />} />
         <Route path="/vencidas" element={<Vencidas />} />
-        <Route path="/completadas" element={<h1>Tareas Completadas</h1>} />
+        <Route path="/completadas" element={<Completadas />} />
       </Route>
       
       {/* 3. ERROR 404 */}
